@@ -1,7 +1,6 @@
 # Python 3
 
 import discord
-from datetime import date
 from cubot_message_handlers import init_handlers
 from message_handling_base import Message
 
@@ -17,10 +16,6 @@ async def on_message(message):
     # don't let cubot respond to himself
     if message.author == client.user:
         return
-
-    channel = message.channel
-    msg = message.content
-    msg_lower = msg.lower()
 
     msg_obj = Message(message)
 

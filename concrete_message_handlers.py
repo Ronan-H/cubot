@@ -1,11 +1,10 @@
 from message_handling_base import *
+
 import sys
 import random
 import discord
-import schedule
-import asyncio
-from datetime import datetime, timedelta
 import re
+from datetime import datetime, timedelta
 
 
 class ShutdownHandler(MatchingMessageHandler):

@@ -79,13 +79,13 @@ class EyesHandler(MatchingMessageHandler):
         )
 
     def shake_eyes_on_matrix(self):
-        for i in range(5):
+        while True:
             for y in range(unicornhathd.HEIGHT):
                 for x in range(unicornhathd.WIDTH):
                     unicornhathd.set_pixel(x, y, random.randint(0, 256), random.randint(0, 256), random.randint(0, 256))
 
             unicornhathd.show()
-            time.sleep(0.5)
+            time.sleep(0.3)
 
     async def handle_message(self, msg):
         # start matrix eye shaking thread

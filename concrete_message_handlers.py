@@ -376,7 +376,7 @@ class EyesHandler(MatchingMessageHandler):
                     try:
                         x_offset = round(math.cos(angle) * dist)
                         y_offset = round(math.sin(angle) * dist)
-                        unicornhathd.set_pixel(x + x_offset, y_offset, r, g, b)
+                        unicornhathd.set_pixel(x + x_offset, y + y_offset, r, g, b)
                     except:
                         pass
 

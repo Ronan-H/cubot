@@ -371,7 +371,11 @@ class EyesHandler(MatchingMessageHandler):
             for x in range(unicornhathd.WIDTH):
                 for y in range(unicornhathd.HEIGHT):
                     r, g, b = pixels[x][y]
-                    unicornhathd.set_pixel(x + math.cos(angle), y + math.sin(angle), r, g, b)
+
+                    try:
+                        unicornhathd.set_pixel(x + math.cos(angle), y + math.sin(angle), r, g, b)
+                    except:
+                        None
 
             unicornhathd.show()
             time.sleep(0.5 / 16)

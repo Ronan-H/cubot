@@ -383,7 +383,7 @@ class EyesHandler(MatchingMessageHandler):
             unicornhathd.show()
             time.sleep(0.5 / 32)
 
-        unicornhathd.clear()
+        unicornhathd.off()
 
 
 class LoveCubotHandler(MatchingMessageHandler):

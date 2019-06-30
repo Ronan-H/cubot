@@ -367,15 +367,18 @@ class EyesHandler(MatchingMessageHandler):
         t_end = time.time() + 5
         while time.time() < t_end:
             angle = random.choice(angles)
+            dist = 2
 
             for x in range(unicornhathd.WIDTH):
                 for y in range(unicornhathd.HEIGHT):
                     r, g, b = pixels[x][y]
 
                     try:
-                        unicornhathd.set_pixel(x + math.cos(angle), y + math.sin(angle), r, g, b)
+                        x_offset = math.round(math.cos(angle) * dist)
+                        y_offset = math.round(math.sin(angle) * dist)
+                        unicornhathd.set_pixel(x + x_offset, y_offset, r, g, b)
                     except:
-                        None
+                        pass
 
             unicornhathd.show()
             time.sleep(0.5 / 32)

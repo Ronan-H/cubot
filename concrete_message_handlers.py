@@ -362,11 +362,10 @@ class EyesHandler(MatchingMessageHandler):
                 unicornhathd.set_pixel(x, y, r, g, b)
 
         unicornhathd.show()
-        time.sleep(0.5 / 16)
+        time.sleep(0.5 / 32)
 
-        # t_end = time.time() + 5
-        # while time.time() < t_end:
-        while True:
+        t_end = time.time() + 5
+        while time.time() < t_end:
             angle = random.choice(angles)
 
             for x in range(unicornhathd.WIDTH):
@@ -379,7 +378,7 @@ class EyesHandler(MatchingMessageHandler):
                         None
 
             unicornhathd.show()
-            time.sleep(0.5 / 16)
+            time.sleep(0.5 / 32)
 
             for x in range(unicornhathd.WIDTH):
                 for y in range(unicornhathd.HEIGHT):
@@ -387,7 +386,7 @@ class EyesHandler(MatchingMessageHandler):
                     unicornhathd.set_pixel(x, y, r, g, b)
 
             unicornhathd.show()
-            time.sleep(0.5 / 16)
+            time.sleep(0.5 / 32)
 
 
 class LoveCubotHandler(MatchingMessageHandler):

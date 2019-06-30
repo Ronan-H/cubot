@@ -364,8 +364,9 @@ class EyesHandler(MatchingMessageHandler):
         unicornhathd.show()
         time.sleep(0.5 / 16)
 
-        t_end = time.time() + 2
-        while time.time() < t_end:
+        # t_end = time.time() + 5
+        # while time.time() < t_end:
+        while True:
             angle = random.choice(angles)
 
             for x in range(unicornhathd.WIDTH):

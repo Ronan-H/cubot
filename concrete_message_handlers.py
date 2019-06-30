@@ -383,14 +383,6 @@ class EyesHandler(MatchingMessageHandler):
             unicornhathd.show()
             time.sleep(0.5 / 32)
 
-            for x in range(unicornhathd.WIDTH):
-                for y in range(unicornhathd.HEIGHT):
-                    r, g, b = pixels[x][y]
-                    unicornhathd.set_pixel(x, y, r, g, b)
-
-            unicornhathd.show()
-            time.sleep(0.5 / 32)
-
 
 class LoveCubotHandler(MatchingMessageHandler):
     def __init__(self, client):

@@ -5,10 +5,13 @@ import random
 import discord
 import re
 import unicornhathd
+import threading
 from matrix_images import *
 import time
 import math
 from datetime import datetime, timedelta
+
+eyes_thread = None
 
 
 class ShutdownHandler(MatchingMessageHandler):
@@ -77,8 +80,9 @@ class EyesHandler(MatchingMessageHandler):
             must_contain=["👀"]
         )
 
-    async def handle_message(self, msg):
-        await msg.obj.add_reaction("👀")
+
+    def shake_eyes_on_matrix(self):
+        global eyes_thread
 
         unicornhathd.brightness(0.6)
         unicornhathd.clear()
@@ -112,6 +116,17 @@ class EyesHandler(MatchingMessageHandler):
 
         unicornhathd.off()
 
+        eyes_thread = None
+
+    async def handle_message(self, msg):
+        global eyes_thread
+
+        await msg.obj.add_reaction("👀")
+
+        if eyes_thread is None:
+            # start matrix eye shaking thread
+            eyes_thread = threading.Thread(target=self.shake_eyes_on_matrix)
+            eyes_thread.start()
 
 class LoveCubotHandler(MatchingMessageHandler):
     def __init__(self, client):

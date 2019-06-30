@@ -4,6 +4,10 @@ import sys
 import random
 import discord
 import re
+import unicornhathd
+from matrix_images import *
+import time
+import math
 from datetime import datetime, timedelta
 
 
@@ -75,6 +79,38 @@ class EyesHandler(MatchingMessageHandler):
 
     async def handle_message(self, msg):
         await msg.obj.add_reaction("👀")
+
+        unicornhathd.brightness(0.6)
+        unicornhathd.clear()
+
+        for x in range(unicornhathd.WIDTH):
+            for y in range(unicornhathd.HEIGHT):
+                r, g, b = eyes_image[x][y]
+                unicornhathd.set_pixel(x, y, r, g, b)
+
+        unicornhathd.show()
+        # time.sleep(0.5 / 32)
+
+        t_end = time.time() + 5
+        while time.time() < t_end:
+            angle = random.uniform(0, math.pi * 2)
+            dist = random.uniform(0, 2)
+
+            for x in range(unicornhathd.WIDTH):
+                for y in range(unicornhathd.HEIGHT):
+                    r, g, b = eyes_image[x][y]
+
+                    try:
+                        x_offset = round(math.cos(angle) * dist)
+                        y_offset = round(math.sin(angle) * dist)
+                        unicornhathd.set_pixel(x + x_offset, y + y_offset, r, g, b)
+                    except:
+                        pass
+
+            unicornhathd.show()
+            # time.sleep(0.5 / 32)
+
+        unicornhathd.off()
 
 
 class LoveCubotHandler(MatchingMessageHandler):
@@ -171,4 +207,3 @@ class ConversionHandler(MatchingMessageHandler):
 
             response = match.group(0) + ' is ' + new_hour + ':' + new_minute + meridiem + ' in ' + unit + ' time'
             await msg.channel.send(response)
-

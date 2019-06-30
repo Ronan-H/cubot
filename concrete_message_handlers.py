@@ -4,7 +4,12 @@ import sys
 import random
 import discord
 import re
+import threading
+import unicornhathd
+import time
 from datetime import datetime, timedelta
+
+threads = []
 
 
 class ShutdownHandler(MatchingMessageHandler):
@@ -73,7 +78,21 @@ class EyesHandler(MatchingMessageHandler):
             must_contain=["👀"]
         )
 
+    def shake_eyes_on_matrix(self):
+        while True:
+            for y in range(unicornhathd.HEIGHT):
+                for x in range(unicornhathd.WIDTH):
+                    unicornhathd.set_pixel(x, y, random.randint(0, 256), random.randint(0, 256), random.randint(0, 256))
+
+            unicornhathd.show()
+            time.sleep(0.5)
+
     async def handle_message(self, msg):
+        # start matrix eye shaking thread
+        t = threading.Thread(target=self.shake_eyes_on_matrix)
+        threads.append(t)
+        t.start()
+
         await msg.obj.add_reaction("👀")
 
 

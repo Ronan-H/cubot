@@ -10,7 +10,20 @@ class TicTacToeGame:
 
     def make_move(self, player, x, y):
         self.board[y][x] = self.player_mapping[player]
+        self.turn = "x" if self.turn == "o" else "x"
         return True
 
     def calc_game_status(self):
-        pass
+        # rows
+        lines = self.board
+        # columns
+        lines += [[self.board[i][j] for i in range(3)] for j in range(3)]
+        # diagonals
+        lines += [self.board[i][i] for i in range(3)]
+        lines += [self.board[i][2 - i] for i in range(3)]
+
+        for p in ["x", "o"]:
+            if any(all(c == p for c in line) for line in lines):
+                return p
+
+        return False

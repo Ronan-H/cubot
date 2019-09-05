@@ -10,8 +10,14 @@ from matrix_images import *
 import time
 import math
 from datetime import datetime, timedelta
+import colorsys
+from PIL import Image, ImageDraw, ImageFont
+from sys import exit
 
 eyes_thread = None
+scroll_thread = None
+
+unicornhathd.rotation(270)
 
 
 class ShutdownHandler(MatchingMessageHandler):
@@ -127,6 +133,92 @@ class EyesHandler(MatchingMessageHandler):
             # start matrix eye shaking thread
             eyes_thread = threading.Thread(target=self.shake_eyes_on_matrix)
             eyes_thread.start()
+
+
+class MatrixTextHandler(MatchingMessageHandler):
+    def __init__(self, client):
+        super().__init__(
+            client,
+            must_start_with="!scroll "
+        )
+
+
+    def scroll_text_on_matrix(self, scroll_text):
+        t = threading.current_thread()
+
+        colour = (255, 0, 0)
+        FONT = ('/usr/share/fonts/truetype/freefont/FreeSansBold.ttf', 16)
+
+        unicornhathd.brightness(0.6)
+        unicornhathd.clear()
+
+        width, height = unicornhathd.get_shape()
+
+        text_x = width
+        text_y = 0
+
+        font_file, font_size = FONT
+
+        font = ImageFont.truetype(font_file, font_size)
+
+        text_width, text_height = width, 0
+
+        try:
+            w, h = font.getsize(scroll_text)
+            text_width += w + width
+            text_height = max(text_height, h)
+
+            text_width += width + text_x + 1
+
+            image = Image.new('RGB', (text_width, max(16, text_height)), (0, 0, 0))
+            draw = ImageDraw.Draw(image)
+
+            offset_left = 0
+
+            draw.text((text_x + offset_left, text_y), scroll_text, colour, font=font)
+
+            offset_left += font.getsize(scroll_text)[0] + width
+
+            while getattr(t, "running", True):
+                for scroll in range(text_width - width):
+                    for x in range(width):
+                        for y in range(height):
+                            pixel = image.getpixel((x + scroll, y))
+                            r, g, b = [int(n) for n in pixel]
+
+                            if max(r, g, b) < 200:
+                                r, g, b = (0, 0, 0)
+
+                            unicornhathd.set_pixel(width - 1 - x, y, r, g, b)
+
+                    unicornhathd.show()
+                    time.sleep(0.015)
+
+                time.sleep(1)
+
+        except KeyboardInterrupt:
+            unicornhathd.off()
+
+        finally:
+            unicornhathd.off()
+
+    async def handle_message(self, msg):
+        global scroll_thread
+
+        scroll_text = msg.raw[8:].upper()
+        # insert extra space between words
+        scroll_text = "".join(c * 2 if c == " " else c for c in scroll_text)
+
+        await msg.channel.send("Ok, setting LED matrix scroll text to \"{}\"".format(scroll_text))
+
+        if scroll_thread is not None:
+            scroll_thread.running = False
+            scroll_thread.join()
+
+        # start matrix text scrolling thread
+        scroll_thread = threading.Thread(target=self.scroll_text_on_matrix, args=(scroll_text,))
+        scroll_thread.start()
+
 
 class LoveCubotHandler(MatchingMessageHandler):
     def __init__(self, client):

@@ -4,8 +4,7 @@ from tictactoe_handler import *
 
 def init_handlers(client):
     handlers = [
-        TicTacToeMoveHandler(client),
-        TicTacToeInitHandler(client),
+        MatrixTextHandler(client),
         WokeHandler(client),
         Magic8Ball(client),
         EyesHandler(client),
